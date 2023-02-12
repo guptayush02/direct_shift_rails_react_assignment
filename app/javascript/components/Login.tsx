@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-// import { Button, AppBar, IconButton, Toolbar, Typography, TextField, InputLabel, Input, FormHelperText, Grid } from '@material-ui/core';
 import {
   makeStyles,
   Container,
@@ -9,12 +8,9 @@ import {
   TextField,
   Button,
   Link,
-  FormControlLabel,
-  Checkbox
 } from "@material-ui/core";
-import { Menu } from '@material-ui/icons';
-import { FormControl } from '@mui/material';
-// import { signup } from '../httpRequest'
+import { signIn } from '../httpRequest'
+import Toast from "./Toast";
 
 interface AppProps {
   arg: string;
@@ -35,16 +31,39 @@ const Login = () => {
 
   const [email, setEmail] = React.useState<String | null>(null);
   const [password, setPassword] = React.useState<String | null>(null);
+  const [openToast, setOpenToast] = React.useState(false);
+  const [message, setMessage] = React.useState<String | null>(null);
 
-  const handleCheckbox = (e) => {
-    console.log("checkbox--->", e.target.checked)
+  const clickSignup = async(e) => {
+    e.preventDefault();
+    try {
+      if (!email || !password) {
+        setOpenToast(true)
+        return setMessage("Parameter Missing")
+      }
+
+      const body = {
+        email, password
+      }
+      const result = await signIn(body)
+      if (result.status === 200) {
+        const user = {
+          ...result.data
+        }
+        delete user.token
+        sessionStorage.setItem("user", JSON.stringify(user))
+        sessionStorage.setItem("ds_token", result.data.token)
+      }
+      setMessage(result.message)
+      return setOpenToast(true);
+    } catch (err) {
+      setMessage(err);
+      return setOpenToast(true);
+    }
   }
 
-  const clickSignup = (e) => {
-    // e.preventDefault();
-    console.log("click signup---->")
-    console.log("email--->", email)
-    console.log("password--->", password)
+  const handleClose = () => {
+    setOpenToast(false)
   }
 
   return (
@@ -70,10 +89,6 @@ const Login = () => {
           required
           onChange={(e) => setPassword(e.target.value)}
         />
-        <FormControlLabel
-          control={<Checkbox value="allowExtraEmails" color="primary" onChange={handleCheckbox} />}
-          label="I want to receive inspiration, marketing promotions and updates via email."
-        />
         <Button
           type="submit"
           fullWidth
@@ -84,6 +99,8 @@ const Login = () => {
         >
           Sign In
         </Button>
+        {/* Toast */}
+        <Toast openToast={openToast} handleClose={handleClose} message={message} />
         <Link href="/" variant="body2">
           Don't have account? Sign up
         </Link>

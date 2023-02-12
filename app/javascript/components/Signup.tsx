@@ -16,12 +16,7 @@ import { FormControl } from '@mui/material';
 import { Snackbar, IconButton } from '@mui/material';
 import { createUser } from '../httpRequest'
 import CloseIcon from '@mui/icons-material/Close';
-
-
-
-interface AppProps {
-  arg: string;
-}
+import Toast from "./Toast";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -77,22 +72,6 @@ const Signup = () => {
     setOpenToast(false)
   }
 
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-
   return (
     <Container maxWidth="xs">
       <Typography className={heading} variant="h3">
@@ -102,7 +81,7 @@ const Signup = () => {
         <TextField
           variant="outlined"
           margin="normal"
-          label="First"
+          label="Name"
           fullWidth
           required
           onChange={(e) => setName(e.target.value)}
@@ -135,7 +114,7 @@ const Signup = () => {
         />
         <FormControlLabel
           control={<Checkbox value="allowExtraEmails" color="primary" onChange={handleCheckbox} />}
-          label="I want to receive inspiration, marketing promotions and updates via email."
+          label="Terms And Condition"
         />
         <Button
           type="submit"
@@ -147,13 +126,15 @@ const Signup = () => {
         >
           Sign Up
         </Button>
-        <Snackbar
+        {/* Toast */}
+        <Toast openToast={openToast} handleClose={handleClose} message={message} />
+        {/* <Snackbar
           open={openToast}
           autoHideDuration={6000}
           onClose={handleClose}
           message={message}
           action={action}
-        />
+        /> */}
         <Link href="/login" variant="body2">
           Already have an account? Sign in
         </Link>

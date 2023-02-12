@@ -14,3 +14,18 @@ export function createUser(data) {
     });
   })
 }
+
+export function signIn(data) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data,
+      url: `/signin`,
+    }).then((response) => {
+      resolve(response.data);
+    });
+  })
+}
