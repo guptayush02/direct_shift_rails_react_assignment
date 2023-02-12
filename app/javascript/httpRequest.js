@@ -1,11 +1,16 @@
 import axios from 'axios';
 
-export function signup() {
-  return new Promise((reject, resolve) => {
-    axios.post('/signup', {
-      email: 'ayush@gmail.com'
+export function createUser(data) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data,
+      url: `/signup`,
     }).then((response) => {
-      console.log("response-->", response.data)
-    })
+      resolve(response.data);
+    });
   })
 }

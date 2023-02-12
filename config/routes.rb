@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
+  # devise_for :users
   root 'home#index'
 
-  get 'user/index'
   post 'signup', to: 'user#create'
   get 'login', to: 'user#login'
   # root 'components#index'
