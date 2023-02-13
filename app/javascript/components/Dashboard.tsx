@@ -47,17 +47,23 @@ const Dashboard = () => {
   }
 
   const clickReferral = async(e) => {
-    e.preventDefault();
-    if (!email) {
+    try {
+      e.preventDefault();
+      if (!email) {
+        setOpenToast(true)
+        return setMessage("Parameter Missing")
+      }
+      setIsLoading(true)
+      const body = { email }
+      const result = await referral(body)
+      setIsLoading(false)
       setOpenToast(true)
-      return setMessage("Parameter Missing")
+      return setMessage(result.message)
+    } catch (err) {
+      setIsLoading(false)
+      setOpenToast(true)
+      return setMessage(err)
     }
-    setIsLoading(true)
-    const body = { email }
-    const result = await referral(body)
-    setIsLoading(false)
-    setOpenToast(true)
-    return setMessage(result.message)
   }
 
   const handleLogout = () => {
