@@ -30,4 +30,4 @@ Things you may want to cover:
 * Setup React dependencies
 7. `yarn install` to install npm dependencies.
 8. `bin/dev` to run server.
-9. Open 0.0.0.0:3000 in the browser to access the running application.
+9. Open `0.0.0.0:3000` in the browser to access the running application.
