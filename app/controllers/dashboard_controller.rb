@@ -2,7 +2,7 @@ include Authentication
 
 class DashboardController < ApplicationController
 
-  # before_action :check_user
+  before_action :check_user, only: [:refer]
   skip_before_action :verify_authenticity_token
 
   def index
@@ -10,7 +10,6 @@ class DashboardController < ApplicationController
   end
 
   def refer
-    check_user
     if UserRefer.find_by(:email => params[:email])
       return render json: {message: 'Already Exist', status: 404}.to_json
     else
