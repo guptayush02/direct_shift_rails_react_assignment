@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+// import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   makeStyles,
@@ -9,7 +10,7 @@ import {
   Button,
   Link,
 } from "@material-ui/core";
-import { signIn } from '../httpRequest'
+import { signIn, dashboard } from '../httpRequest'
 import Toast from "./Toast";
 
 interface AppProps {
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
+  // const history = useHistory();
+  // console.log("navigate-->", navigate)
+
   const { heading, submitButton } = useStyles();
 
   const [email, setEmail] = React.useState<String | null>(null);
@@ -53,6 +57,9 @@ const Login = () => {
         delete user.token
         sessionStorage.setItem("user", JSON.stringify(user))
         sessionStorage.setItem("ds_token", result.data.token)
+        // history.push("/dashboard");
+        await dashboard()
+        return
       }
       setMessage(result.message)
       return setOpenToast(true);

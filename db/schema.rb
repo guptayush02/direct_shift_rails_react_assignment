@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_12_194515) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_13_052856) do
+  create_table "user_refers", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_refers_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -20,4 +28,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_194515) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "user_refers", "users"
 end

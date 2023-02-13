@@ -4,3 +4,5 @@
 import "./components/application";
 import "./components/Signup";
 import "./components/Login";
+import "./components/Dashboard";
+
