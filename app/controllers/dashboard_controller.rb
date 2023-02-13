@@ -10,7 +10,7 @@ class DashboardController < ApplicationController
   end
 
   def refer
-    if UserRefer.find_by(:email => params[:email])
+    if UserRefer.find_by(:email => params[:email]) || User.find_by(:email => params[:email])
       return render json: {message: 'Already Exist', status: 404}.to_json
     else
       if @current_user.user_refers.create(email: params[:email]) && UserReferMailer.send_referral_mail(@current_user.name, params[:email]).deliver_now
