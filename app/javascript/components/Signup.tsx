@@ -17,6 +17,7 @@ import { Snackbar, IconButton } from '@mui/material';
 import { createUser } from '../httpRequest'
 import CloseIcon from '@mui/icons-material/Close';
 import Toast from "./Toast";
+import { checkLogin } from "../helper";
 
 const useStyles = makeStyles((theme) => ({
   heading: {
@@ -29,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Signup = () => {
+
+  React.useEffect(() => {
+    checkLogin()
+  }, [])
+
   const { heading, submitButton } = useStyles();
 
   const [name, setName] = React.useState<String | null>(null);

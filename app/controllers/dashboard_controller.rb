@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
+    return render template: "dashboard/index"
   end
 
   def refer

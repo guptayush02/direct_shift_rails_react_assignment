@@ -21,19 +21,18 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   # For letter_opener
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:        'smtp.gmail.com',
+    port:           '587',
+    authentication: :plain,
+    user_name:      'assignmenttest70@gmail.com',
+    password:       'qcqpfiatewmiidcu',
+    domain:         'mail.google.com',
+    # enable_starttls_auto: true
+  }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
-
-  config.action_mailer.smtp_settings = {
-    :address              => "smtp.gmail.com",
-    :port                 => 587,
-    :domain              => 'gmail.com',
-    :user_name            => "jackmortan2021@gmail.com",
-    :password             => "Jack@Mortan2021",
-    :authentication       => "plain",
-    :enable_starttls_auto => true
-  }
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -50,6 +49,9 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+
+  config.middleware.use ActionDispatch::Cookies
+  config.middleware.use ActionDispatch::Session::CookieStore
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local

@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { signIn, dashboard } from '../httpRequest'
 import Toast from "./Toast";
+import { checkLogin } from "../helper";
 
 interface AppProps {
   arg: string;
@@ -28,8 +29,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Login = () => {
-  // const history = useHistory();
-  // console.log("navigate-->", navigate)
+
+  React.useEffect(() => {
+    checkLogin()
+  }, []);
+
+  // const checkLogin = () => {
+  //   if (!sessionStorage.getItem("ds_token") || !sessionStorage.getItem("user")) {
+  //     sessionStorage.removeItem('ds_token')
+  //     sessionStorage.removeItem('user')
+  //     return true
+  //   } else {
+  //     return history.back();
+  //   }
+  // }
 
   const { heading, submitButton } = useStyles();
 
@@ -57,9 +70,7 @@ const Login = () => {
         delete user.token
         sessionStorage.setItem("user", JSON.stringify(user))
         sessionStorage.setItem("ds_token", result.data.token)
-        // history.push("/dashboard");
-        await dashboard()
-        return
+        location.href = 'dashboard'
       }
       setMessage(result.message)
       return setOpenToast(true);

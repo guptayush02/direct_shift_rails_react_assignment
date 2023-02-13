@@ -4,19 +4,17 @@ import PropTypes from "prop-types";
 import {
   makeStyles,
   Container,
-  // Typography,
   TextField,
-  Button,
-  Link,
+  Button
 } from "@material-ui/core";
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import CircularProgress from '@mui/material/CircularProgress';
 import { referral } from '../httpRequest'
 import Toast from "./Toast";
+import { checkToken } from "../helper";
 
 interface AppProps {
   arg: string;
@@ -38,10 +36,10 @@ const Dashboard = () => {
   const [email, setEmail] = React.useState<String | null>(null);
   const [openToast, setOpenToast] = React.useState(false);
   const [message, setMessage] = React.useState<String | null>(null);
+  const [isLoading, setIsLoading] = React.useState<Boolean | false>(false);
 
   React.useEffect(() => {
-    console.log("useEffect")
-    console.log("token-->", sessionStorage.getItem("ds_token"))
+    checkToken()
   }, [])
 
   const handleClose = () => {
@@ -54,11 +52,18 @@ const Dashboard = () => {
       setOpenToast(true)
       return setMessage("Parameter Missing")
     }
+    setIsLoading(true)
     const body = { email }
     const result = await referral(body)
-    console.log("result--->", result)
+    setIsLoading(false)
     setOpenToast(true)
     return setMessage(result.message)
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('ds_token')
+    sessionStorage.removeItem('user')
+    location.href = 'login'
   }
 
   return (
@@ -68,7 +73,7 @@ const Dashboard = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Direct Shifts Assignment
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <Button color="inherit" onClick={handleLogout}>Logout</Button>
         </Toolbar>
       </AppBar>
 
@@ -85,17 +90,20 @@ const Dashboard = () => {
           required
           onChange={(e) => setEmail(e.target.value)}
         />
-
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={submitButton}
-          onClick={clickReferral}
-        >
-          Refer
-        </Button>
+        {
+          isLoading ?
+          <CircularProgress />
+          :
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={submitButton}
+            onClick={clickReferral}
+          >
+            Send
+          </Button>
+        }
         {/* Toast */}
         <Toast openToast={openToast} handleClose={handleClose} message={message} />
       </form>
